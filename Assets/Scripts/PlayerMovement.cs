@@ -74,6 +74,9 @@ public class PlayerMovement : MonoBehaviour
 
         EventManager.Instance.AddListener(EventType.EatFoodBegin, OnGameStatusChanged);
         EventManager.Instance.AddListener(EventType.EatFoodEnd, OnGameStatusChanged);
+
+        maxSpeed = defaultSpeed;
+        maxDash = dashSpeed;
     }
 
     void Update()
@@ -201,10 +204,19 @@ public class PlayerMovement : MonoBehaviour
             DirEnum = yAbs < xAbs? Direction.Horizontal : Direction.Down;
         }
     }
-
+    private float maxSpeed;
+    private float minSpeed;
+    private float maxDash;
+    private float minDash;
     public void ChangeSpeed(float speed, float dash)
     {
-        defaultSpeed = speed;
-        dashSpeed = dash;
+        defaultSpeed = Mathf.Clamp(speed, minSpeed, maxSpeed);
+        dashSpeed = Mathf.Clamp(dash, minDash, maxDash);
+    }
+
+    public void SetMinSpeed(float speed, float dash)
+    {
+        minSpeed = speed;
+        minDash = dash;
     }
 }

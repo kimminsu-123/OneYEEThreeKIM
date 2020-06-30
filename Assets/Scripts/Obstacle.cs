@@ -18,10 +18,14 @@ public class Obstacle : MonoBehaviour
     public float damage;
 
     private PlayerHealthSystem playerHealth;
-
+    private PlayerMovement playerMovement;
     private void Awake()
     {
         playerHealth = GameObject.FindWithTag("Player").GetComponent<PlayerHealthSystem>();
+    }
+
+    private void Start()
+    {
     }
 
     void Update()
@@ -32,6 +36,9 @@ public class Obstacle : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
+        {
             playerHealth.PlayerDetection(this);
+            Destroy(gameObject);
+        }
     }
 }

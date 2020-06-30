@@ -7,20 +7,25 @@ public class ObSpawner : MonoBehaviour
     public GameObject ObPrefab;
     public Transform[] spawnPoints;
     public float regenTime = 15f;
+    public float moveSpeedPercent;
 
     public int itemSpawnCount = 10;
 
     private int suffleCount;
-    private List<HealItem> spawnedObs = new List<HealItem>();
+    private List<Obstacle> spawnedObs = new List<Obstacle>();
+
+    private PlayerMovement playerMovement;
 
     private void Awake()
     {
         suffleCount = spawnPoints.Length * 100;
+        playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
     }
 
     private void Start()
     {
         Init();
+        playerMovement.SetMinSpeed(playerMovement.defaultSpeed * moveSpeedPercent, playerMovement.dashSpeed * moveSpeedPercent);
     }
 
     private void Update()
@@ -41,12 +46,12 @@ public class ObSpawner : MonoBehaviour
         regenTimer += Time.deltaTime;
         if(regenTimer >= regenTime)
         {
-            GameObject item = Instantiate(ObPrefab, spawnPoints[index]);
-            item.transform.position = item.transform.parent.position;
-            item.transform.rotation = item.transform.parent.rotation;
+            GameObject obs = Instantiate(ObPrefab, spawnPoints[index]);
+            obs.transform.position = obs.transform.parent.position;
+            obs.transform.rotation = obs.transform.parent.rotation;
 
-            spawnedObs.Add(item.GetComponent<HealItem>());
-
+            spawnedObs.Add(obs.GetComponent<Obstacle>());
+            obs.GetComponent<Obstacle>().moveSpeedPercent = moveSpeedPercent;
             index++;
 
             if(spawnedObs.Count > spawnPoints.Length)
@@ -75,11 +80,12 @@ public class ObSpawner : MonoBehaviour
     {
         for (int i = 0; i < itemSpawnCount; i++)
         {
-            GameObject item = Instantiate(ObPrefab, spawnPoints[i]);
-            item.transform.position = item.transform.parent.position;
-            item.transform.rotation = item.transform.parent.rotation;
+            GameObject obs = Instantiate(ObPrefab, spawnPoints[i]);
+            obs.transform.position = obs.transform.parent.position;
+            obs.transform.rotation = obs.transform.parent.rotation;
 
-            spawnedObs.Add(item.GetComponent<HealItem>());
+            spawnedObs.Add(obs.GetComponent<Obstacle>());
+            obs.GetComponent<Obstacle>().moveSpeedPercent = moveSpeedPercent;
 
             index = i;
         }
