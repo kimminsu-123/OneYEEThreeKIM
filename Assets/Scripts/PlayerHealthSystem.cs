@@ -13,6 +13,7 @@ public class PlayerHealthSystem : LivingEntity
 
     private Vignette vignette;
     private static PlayerHealthSystem instance;
+    private PlayerMovement playerMovement;
     private void Awake()
     {
         base.Awake();
@@ -24,6 +25,8 @@ public class PlayerHealthSystem : LivingEntity
             instance = this;
 
         DontDestroyOnLoad(gameObject);
+
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     void Start()
@@ -36,12 +39,20 @@ public class PlayerHealthSystem : LivingEntity
     void Update()
     {
         DecreaseHealth();
+        PlayerSlowly();
+    }
+
+    public void TakeDamage(float damage)
+    {
+        CurrHealth -= damage;
+        var value = Mathf.Clamp(maxVignette - (CurrHealth / maxHealth), 0f, maxVignette);
+        vignette.intensity.value = value;
     }
 
     private void DecreaseHealth()
     {
         CurrHealth -= Time.deltaTime * minusHealthPerSec;
-        var value = Mathf.Clamp(maxVignette - (currHealth / maxHealth), 0f, maxVignette);
+        var value = Mathf.Clamp(maxVignette - (CurrHealth / maxHealth), 0f, maxVignette);
         vignette.intensity.value = value;
     }
 
@@ -80,4 +91,37 @@ public class PlayerHealthSystem : LivingEntity
         }
     }
 
+    private Obstacle currObs;
+    private float speed;
+    private float dash;
+    private bool isSlowly = false;
+    public void PlayerDetection(Obstacle obs)
+    {
+        currObs = obs;
+        TakeDamage(currObs.damage);
+        switch (obs.type)
+        {
+            case ObstacleTypes.SpeedSlowly:
+                speed = playerMovement.defaultSpeed;
+                dash = playerMovement.dashSpeed;
+                isSlowly = true;
+                playerMovement.ChangeSpeed(speed * currObs.moveSpeedPercent, dash * currObs.moveSpeedPercent);
+                break;
+        }
+    }
+
+    private float slowTimer = 0f;
+    private void PlayerSlowly()
+    {
+        if (isSlowly)
+        {
+            slowTimer += Time.deltaTime;
+            if(slowTimer >= currObs.time)
+            {
+                slowTimer = 0f;
+                isSlowly = false;
+                playerMovement.ChangeSpeed(speed , dash );
+            }
+        }
+    }
 }

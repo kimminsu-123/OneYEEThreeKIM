@@ -32,7 +32,18 @@ public class PlayerMovement : MonoBehaviour
     private float feelDashTimer;
 
     [Header("이동")]
-    public float currSpeed;
+    private float currSpeed;
+    public float CurrSpeed
+    {
+        get
+        {
+            return currSpeed;
+        }
+        private set
+        {
+            currSpeed = value;
+        }
+    }
     public float defaultSpeed;
     public float dashSpeed;
 
@@ -80,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        currSpeed = defaultSpeed;
+        CurrSpeed = defaultSpeed;
         
         if (playerInput.IsDash)
         {
@@ -96,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
         var v = playerInput.V;
 
         var dir = new Vector2(h, v);
-        var velocity = dir * currSpeed;
+        var velocity = dir * CurrSpeed;
 
         if (h != 0f)
             sr.flipX = h > 0f ? true : false;
@@ -111,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         //ChangeCurrSpeed
-        currSpeed = dashSpeed;
+        CurrSpeed = dashSpeed;
 
         //Update Gauge
         var dashValue = dashPerSec * Time.fixedDeltaTime;
@@ -189,5 +200,11 @@ public class PlayerMovement : MonoBehaviour
             var xAbs = Mathf.Abs(dir.x);
             DirEnum = yAbs < xAbs? Direction.Horizontal : Direction.Down;
         }
+    }
+
+    public void ChangeSpeed(float speed, float dash)
+    {
+        defaultSpeed = speed;
+        dashSpeed = dash;
     }
 }

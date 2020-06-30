@@ -14,7 +14,7 @@ public class LivingEntity : MonoBehaviour
     public EntityCategory category = EntityCategory.None;
 
     public float maxHealth;
-    public float currHealth = 0;
+    private float currHealth = 0;
     public float CurrHealth
     {
         get
