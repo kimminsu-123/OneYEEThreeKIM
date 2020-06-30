@@ -445,9 +445,10 @@ MonoBehaviour:
   maxDashGauge: 100
   dashPerSec: 20
   feelDashPerSec: 10
-  currSpeed: 0
   defaultSpeed: 7
   dashSpeed: 15
+  saveSpeed: 7
+  saveDash: 15
 --- !u!114 &5207413512534675551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,7 +463,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   category: 1
   maxHealth: 300
-  currHealth: 0
   postProcessingOfHealth: {fileID: 11400000, guid: c076213428a21e845a6caa4cebfa74e4,
     type: 2}
   maxVignette: 0.5

@@ -34,6 +34,7 @@ public class PlayerHealthSystem : LivingEntity
         base.Start();
         postProcessingOfHealth.TryGet(out vignette);
         EventManager.Instance.AddListener(EventType.EatFoodEnd, OnGameStatusChanged);
+        EventManager.Instance.AddListener(EventType.EatFoodBegin, OnGameStatusChanged);
     }
 
     void Update()
@@ -69,17 +70,18 @@ public class PlayerHealthSystem : LivingEntity
 
     private void OnGameStatusChanged(EventType et, Component sender, object args = null)
     {
-        var info = args as ItemInfo;
-        if (info == null)
-            return;
-         
         switch (et)
         {
             case EventType.Opening:
                 break;
             case EventType.EatFoodBegin:
+                AudioManager.Instance.OneShotPlay(AudioManager.Instance.eatSound);
                 break;
             case EventType.EatFoodEnd:
+                AudioManager.Instance.StopSound();
+                var info = args as ItemInfo;
+                if (info == null)
+                    return;
                 CurrHealth += info.healAmount;
                 break;
             case EventType.Story:
@@ -102,8 +104,8 @@ public class PlayerHealthSystem : LivingEntity
         switch (obs.type)
         {
             case ObstacleTypes.SpeedSlowly:
-                speed = playerMovement.defaultSpeed;
-                dash = playerMovement.dashSpeed;
+                speed = playerMovement.saveSpeed;
+                dash = playerMovement.saveDash;
                 isSlowly = true;
                 playerMovement.ChangeSpeed(speed * currObs.moveSpeedPercent, dash * currObs.moveSpeedPercent);
                 break;
