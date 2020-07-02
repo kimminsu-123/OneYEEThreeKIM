@@ -8,7 +8,7 @@ public enum ObstacleTypes
     SpeedSlowly,
 }
 
-[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(CircleCollider2D))]
 public class Obstacle : MonoBehaviour
 {
     public float moveSpeedPercent; // 0f ~ 1f

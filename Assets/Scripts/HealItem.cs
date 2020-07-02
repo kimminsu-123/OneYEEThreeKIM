@@ -10,7 +10,7 @@ public class ItemInfo
     public float eatTime = 2f;
 }
 
-[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(CircleCollider2D))]
 public class HealItem : MonoBehaviour
 {
     public ItemInfo info;

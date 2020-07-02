@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
 {
-    public GameObject itemPrefab;
+    public GameObject[] itemPrefabs;
     public Transform[] spawnPoints;
 
     public int itemSpawnCount;
@@ -47,7 +47,8 @@ public class ItemSpawner : MonoBehaviour
     {
         for(int i = 0; i < itemSpawnCount; i++)
         {
-            GameObject item = Instantiate(itemPrefab, spawnPoints[i]);
+            int randItem = Random.Range(0, itemPrefabs.Length);
+            GameObject item = Instantiate(itemPrefabs[randItem], spawnPoints[i]);
             item.transform.position = item.transform.parent.position;
             item.transform.rotation = item.transform.parent.rotation;
 
