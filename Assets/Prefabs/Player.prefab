@@ -116,7 +116,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.09, y: 0.32}
+  m_Offset: {x: -0.1, y: 0.32}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -127,7 +127,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.4}
+  m_Size: {x: 0.7, y: 0.4}
   m_EdgeRadius: 0
 --- !u!1 &5207413511146537246
 GameObject:
@@ -442,8 +442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96903c451baf9094284e18589e5ea13b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerObject: {fileID: 5207413512534675545}
-  colGround: {fileID: 8413633374719905926}
   maxDashGauge: 100
   dashPerSec: 20
   feelDashPerSec: 10

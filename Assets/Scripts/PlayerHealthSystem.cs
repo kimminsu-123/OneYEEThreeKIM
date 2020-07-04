@@ -14,6 +14,8 @@ public class PlayerHealthSystem : LivingEntity
     private Vignette vignette;
     private static PlayerHealthSystem instance;
     private PlayerMovement playerMovement;
+
+    
     private void Awake()
     {
         base.Awake();

@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
             case EventType.Gameover:
                 AudioManager.Instance.OneShotPlay(AudioManager.Instance.deadSound);
                 IsGameover = true;
+                StopAllCoroutines();
                 break;
         }
     }

@@ -9,7 +9,6 @@ public enum Direction
     Down,
     Horizontal,
 }
-[ExecuteInEditMode]
 public class PlayerMovement : MonoBehaviour
 {
     [Header("대쉬 게이지")]
@@ -69,6 +68,8 @@ public class PlayerMovement : MonoBehaviour
         cachedTr = GetComponent<Transform>();
 
         sr = GetComponent<SpriteRenderer>();
+
+        boxCol = GetComponent<BoxCollider2D>();
     }
 
     void Start()
@@ -176,7 +177,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
     }
-
+    private BoxCollider2D boxCol;
     private Vector2 currDir;
     public Vector2 GetDirection()
     {
@@ -210,7 +211,29 @@ public class PlayerMovement : MonoBehaviour
             var xAbs = Mathf.Abs(dir.x);
             DirEnum = yAbs < xAbs? Direction.Horizontal : Direction.Down;
         }
-        
+
+        SetColliderRange();
+    }
+
+    private void SetColliderRange()
+    {
+        Vector2 size = boxCol.size;
+        switch (DirEnum)
+        {
+            case Direction.Horizontal:
+                size.x = 1.75f;
+                size.y = 1f;
+                break;
+            case Direction.Down:
+                size.x = 0.65f;
+                size.y = 1.2f;
+                break;
+            case Direction.Up:
+                size.x = 0.75f;
+                size.y = 1.2f;
+                break;
+        }
+        boxCol.size = size;
     }
     private float minSpeed;
     private float minDash;

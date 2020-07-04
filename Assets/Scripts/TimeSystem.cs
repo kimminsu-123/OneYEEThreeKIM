@@ -16,6 +16,7 @@ public class TimeSystem : MonoBehaviour
     private float dayTime_Sec;
     private float timer = 0f;
     private bool isGameover = false;
+    private float volume = 1f;
 
     private void Awake()
     {
@@ -43,11 +44,16 @@ public class TimeSystem : MonoBehaviour
         {
             timer = 0f;
             isDay = !isDay;
+            volume = 0f;
             if (isDay)
             {
                 EventManager.Instance.PostNitification(EventType.OnDay, this);
+                StartCoroutine(AudioManager.Instance.FadeIn(1f, AudioManager.Instance.dayBGM));
             }
-
+            else
+            {
+                StartCoroutine(AudioManager.Instance.FadeIn(1f, AudioManager.Instance.nightBGM));
+            }
             EventManager.Instance.PostNitification(EventType.OnTimeChange, this);
         }
     }
@@ -100,6 +106,8 @@ public class TimeSystem : MonoBehaviour
             case EventType.Gameover:
                 SetNight();
                 isGameover = true;
+                AudioManager.Instance.StopSoundBGM();
+                AudioManager.Instance.StopSound();
                 break;
         }
     }
