@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
             case EventType.Story:
                 break;
             case EventType.Gameover:
+                AudioManager.Instance.OneShotPlay(AudioManager.Instance.deadSound);
                 IsGameover = true;
                 break;
         }

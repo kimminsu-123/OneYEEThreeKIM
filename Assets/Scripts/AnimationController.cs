@@ -32,6 +32,6 @@ public class AnimationController : MonoBehaviour
             animator.SetFloat("DirectionV", dir.y);
         }
 
-        animator.speed = Mathf.Max(movement.currSpeed / movement.defaultSpeed, 1f);
+        animator.speed = Mathf.Max(movement.CurrSpeed / movement.defaultSpeed, 1f);
     }
 }

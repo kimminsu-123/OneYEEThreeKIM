@@ -13,6 +13,7 @@ public class PlayerHealthSystem : LivingEntity
 
     private Vignette vignette;
     private static PlayerHealthSystem instance;
+    private PlayerMovement playerMovement;
     private void Awake()
     {
         base.Awake();
@@ -24,6 +25,8 @@ public class PlayerHealthSystem : LivingEntity
             instance = this;
 
         DontDestroyOnLoad(gameObject);
+
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     void Start()
@@ -31,17 +34,26 @@ public class PlayerHealthSystem : LivingEntity
         base.Start();
         postProcessingOfHealth.TryGet(out vignette);
         EventManager.Instance.AddListener(EventType.EatFoodEnd, OnGameStatusChanged);
+        EventManager.Instance.AddListener(EventType.EatFoodBegin, OnGameStatusChanged);
     }
 
     void Update()
     {
         DecreaseHealth();
+        PlayerSlowly();
+    }
+
+    public void TakeDamage(float damage)
+    {
+        CurrHealth -= damage;
+        var value = Mathf.Clamp(maxVignette - (CurrHealth / maxHealth), 0f, maxVignette);
+        vignette.intensity.value = value;
     }
 
     private void DecreaseHealth()
     {
         CurrHealth -= Time.deltaTime * minusHealthPerSec;
-        var value = Mathf.Clamp(maxVignette - (currHealth / maxHealth), 0f, maxVignette);
+        var value = Mathf.Clamp(maxVignette - (CurrHealth / maxHealth), 0f, maxVignette);
         vignette.intensity.value = value;
     }
 
@@ -58,17 +70,18 @@ public class PlayerHealthSystem : LivingEntity
 
     private void OnGameStatusChanged(EventType et, Component sender, object args = null)
     {
-        var info = args as ItemInfo;
-        if (info == null)
-            return;
-         
         switch (et)
         {
             case EventType.Opening:
                 break;
             case EventType.EatFoodBegin:
+                AudioManager.Instance.OneShotPlay(AudioManager.Instance.eatSound);
                 break;
             case EventType.EatFoodEnd:
+                AudioManager.Instance.StopSound();
+                var info = args as ItemInfo;
+                if (info == null)
+                    return;
                 CurrHealth += info.healAmount;
                 break;
             case EventType.Story:
@@ -80,4 +93,37 @@ public class PlayerHealthSystem : LivingEntity
         }
     }
 
+    private Obstacle currObs;
+    private float speed;
+    private float dash;
+    private bool isSlowly = false;
+    public void PlayerDetection(Obstacle obs)
+    {
+        currObs = obs;
+        TakeDamage(currObs.damage);
+        switch (obs.type)
+        {
+            case ObstacleTypes.SpeedSlowly:
+                speed = playerMovement.saveSpeed;
+                dash = playerMovement.saveDash;
+                isSlowly = true;
+                playerMovement.ChangeSpeed(speed * currObs.moveSpeedPercent, dash * currObs.moveSpeedPercent);
+                break;
+        }
+    }
+
+    private float slowTimer = 0f;
+    private void PlayerSlowly()
+    {
+        if (isSlowly)
+        {
+            slowTimer += Time.deltaTime;
+            if(slowTimer >= currObs.time)
+            {
+                slowTimer = 0f;
+                isSlowly = false;
+                playerMovement.ChangeSpeed(speed , dash );
+            }
+        }
+    }
 }
