@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - HideCol
+  - StageObj
+  - ItemSpawner
+  - ObSpawner
+  - Item
   layers:
   - Default
   - TransparentFX

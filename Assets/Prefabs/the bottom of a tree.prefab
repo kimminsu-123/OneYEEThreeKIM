@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8515353488338619600}
   m_Layer: 0
   m_Name: the bottom of a tree
-  m_TagString: Untagged
+  m_TagString: StageObj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1757494417
   m_SortingLayer: -1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: a6111ce6e71ae2c49b6b72369fc58c27, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

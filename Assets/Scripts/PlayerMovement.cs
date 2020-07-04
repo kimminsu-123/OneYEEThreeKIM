@@ -25,6 +25,10 @@ public class PlayerMovement : MonoBehaviour
         private set
         {
             currDashGauge = value;
+
+            if (UIManager.Instance == null)
+                return;
+
             UIManager.Instance.playerInfoPanel.UpdateDashGauge(CurrDashGauge / maxDashGauge);
         }
     }

@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
 {
-    public GameObject itemPrefab;
-    public Transform[] spawnPoints;
+    public GameObject[] itemPrefabs;
 
     public int itemSpawnCount;
 
-    private int suffleCount;
     private List<HealItem> spawnedItems = new List<HealItem>();
+
+    public Rect bigRect;
+    public Rect smallRect;
+
+    private FocusCamera01 cam;
 
     private void Awake()
     {
-        suffleCount = spawnPoints.Length * 100;
+        cam = Camera.main.GetComponent<FocusCamera01>();
     }
 
     private void Start()
@@ -26,30 +29,46 @@ public class ItemSpawner : MonoBehaviour
 
     private void Init()
     {
-        Suffle();
+        bigRect = cam.bigRect;
+
         CreateItem();
     }
 
-    private void Suffle()
+    private void SetSmallRectRange(HealItem currItem)
     {
-        for(int i = 0; i < suffleCount; i++)
-        {
-            int rhs = Random.Range(0, spawnPoints.Length);
-            int lhs = Random.Range(0, spawnPoints.Length);
+        var col = currItem.GetComponent<Collider2D>();
 
-            var temp = spawnPoints[rhs];
-            spawnPoints[rhs] = spawnPoints[lhs];
-            spawnPoints[lhs] = temp;
-        }
+        var halfHeight = col.bounds.size.y / 2f;
+        var halfWidth = col.bounds.size.x / 2f;
+
+        smallRect.x = bigRect.x + halfWidth;
+        smallRect.width = bigRect.width - halfWidth * 2f;
+
+        smallRect.y = bigRect.y + halfHeight;
+        smallRect.height = bigRect.height - halfHeight * 2f;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(smallRect.center, smallRect.size);
     }
 
     private void CreateItem()
     {
         for(int i = 0; i < itemSpawnCount; i++)
         {
-            GameObject item = Instantiate(itemPrefab, spawnPoints[i]);
-            item.transform.position = item.transform.parent.position;
-            item.transform.rotation = item.transform.parent.rotation;
+            int randItem = Random.Range(0, itemPrefabs.Length);
+
+            GameObject item = Instantiate(itemPrefabs[randItem]);
+            SetSmallRectRange(item.GetComponent<HealItem>());
+
+            var x = Random.Range(smallRect.xMin, smallRect.xMax);
+            var y = Random.Range(smallRect.yMin, smallRect.yMax);
+            var pos = new Vector2(x, y);
+
+            item.transform.position = pos;
+            item.transform.rotation = Quaternion.identity;
 
             spawnedItems.Add(item.GetComponent<HealItem>());
         }
