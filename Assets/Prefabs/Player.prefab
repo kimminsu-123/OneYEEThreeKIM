@@ -442,6 +442,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96903c451baf9094284e18589e5ea13b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerObject: {fileID: 5207413512534675545}
+  colGround: {fileID: 8413633374719905926}
   maxDashGauge: 100
   dashPerSec: 20
   feelDashPerSec: 10
@@ -484,7 +486,7 @@ MonoBehaviour:
   size: {x: 1, y: 0.7}
   checkLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 16640
 --- !u!61 &5207413512534675545
 BoxCollider2D:
   m_ObjectHideFlags: 0

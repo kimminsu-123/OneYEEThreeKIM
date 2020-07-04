@@ -4,21 +4,19 @@ using UnityEngine;
 
 public class ObSpawner : MonoBehaviour
 {
-    public GameObject ObPrefab;
-    public Transform[] spawnPoints;
+    public GameObject[] ObPrefabs;
     public float regenTime = 15f;
     public float moveSpeedPercent;
-
     public int itemSpawnCount = 10;
+    public int maxSpawn = 20;
 
-    private int suffleCount;
     private List<Obstacle> spawnedObs = new List<Obstacle>();
-
     private PlayerMovement playerMovement;
+    private FocusCamera01 cam;
 
     private void Awake()
     {
-        suffleCount = spawnPoints.Length * 100;
+        cam = Camera.main.GetComponent<FocusCamera01>();
         playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
     }
 
@@ -35,7 +33,7 @@ public class ObSpawner : MonoBehaviour
 
     private void Init()
     {
-        Suffle();
+        bigRect = cam.bigRect;
         Create();
     }
 
@@ -46,33 +44,13 @@ public class ObSpawner : MonoBehaviour
         regenTimer += Time.deltaTime;
         if(regenTimer >= regenTime)
         {
-            GameObject obs = Instantiate(ObPrefab, spawnPoints[index]);
-            obs.transform.position = obs.transform.parent.position;
-            obs.transform.rotation = obs.transform.parent.rotation;
+            CreateObstacle();
 
-            spawnedObs.Add(obs.GetComponent<Obstacle>());
-            obs.GetComponent<Obstacle>().moveSpeedPercent = moveSpeedPercent;
-            index++;
-
-            if(spawnedObs.Count > spawnPoints.Length)
+            if(spawnedObs.Count > maxSpawn)
             {
-                index = 0;
                 spawnedObs.RemoveAt(0);
             }
             regenTimer = 0f;
-        }
-    }
-
-    private void Suffle()
-    {
-        for (int i = 0; i < suffleCount; i++)
-        {
-            int rhs = Random.Range(0, spawnPoints.Length);
-            int lhs = Random.Range(0, spawnPoints.Length);
-
-            var temp = spawnPoints[rhs];
-            spawnPoints[rhs] = spawnPoints[lhs];
-            spawnPoints[lhs] = temp;
         }
     }
 
@@ -80,14 +58,47 @@ public class ObSpawner : MonoBehaviour
     {
         for (int i = 0; i < itemSpawnCount; i++)
         {
-            GameObject obs = Instantiate(ObPrefab, spawnPoints[i]);
-            obs.transform.position = obs.transform.parent.position;
-            obs.transform.rotation = obs.transform.parent.rotation;
-
-            spawnedObs.Add(obs.GetComponent<Obstacle>());
-            obs.GetComponent<Obstacle>().moveSpeedPercent = moveSpeedPercent;
-
-            index = i;
+            CreateObstacle();
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(smallRect.center, smallRect.size);
+    }
+
+    private void CreateObstacle()
+    {
+        int randObs = Random.Range(0, ObPrefabs.Length);
+
+        var x = Random.Range(smallRect.xMin, smallRect.xMax);
+        var y = Random.Range(smallRect.yMin, smallRect.yMax);
+        var pos = new Vector2(x, y);
+
+        GameObject obs = Instantiate(ObPrefabs[randObs]);
+        SetSmallRectRange(obs.GetComponent<Obstacle>());
+
+        obs.transform.position = pos;
+        obs.transform.rotation = Quaternion.identity;
+
+        spawnedObs.Add(obs.GetComponent<Obstacle>());
+        obs.GetComponent<Obstacle>().moveSpeedPercent = moveSpeedPercent;
+    }
+
+    public Rect bigRect;
+    public Rect smallRect;
+    private void SetSmallRectRange(Obstacle obstacle)
+    {
+        var col = obstacle.GetComponent<Collider2D>();
+
+        var halfHeight = col.bounds.size.y / 2f;
+        var halfWidth = col.bounds.size.x / 2f;
+
+        smallRect.x = bigRect.x + halfWidth;
+        smallRect.width = bigRect.width - halfWidth * 2f;
+
+        smallRect.y = bigRect.y + halfHeight;
+        smallRect.height = bigRect.height - halfHeight * 2f;
     }
 }

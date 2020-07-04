@@ -34,6 +34,7 @@ public class InterationHelper : MonoBehaviour
             return;
 
         var linqItems = (from item in items
+                         where item.GetComponent<HealItem>()
                         orderby item
                         select item).ToArray();
 

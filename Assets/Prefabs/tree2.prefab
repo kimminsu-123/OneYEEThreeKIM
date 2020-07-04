@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -3092090052271665835}
   - component: {fileID: 1628981068585124772}
   - component: {fileID: 788569607235929737}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: tree2
   m_TagString: StageObj
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 2.56, y: 2.56}
+    oldSize: {x: 2.72, y: 2.72}
     newSize: {x: 2.56, y: 2.56}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -140,7 +140,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 2.56, y: 2.56}
+    oldSize: {x: 2.72, y: 2.72}
     newSize: {x: 2.56, y: 2.56}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

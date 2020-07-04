@@ -24,15 +24,6 @@ public class Obstacle : MonoBehaviour
         playerHealth = GameObject.FindWithTag("Player").GetComponent<PlayerHealthSystem>();
     }
 
-    private void Start()
-    {
-    }
-
-    void Update()
-    {
-
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))

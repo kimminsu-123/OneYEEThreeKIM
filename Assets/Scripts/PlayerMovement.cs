@@ -76,8 +76,11 @@ public class PlayerMovement : MonoBehaviour
         CurrDashGauge = maxDashGauge;
         CanMove = true;
 
-        EventManager.Instance.AddListener(EventType.EatFoodBegin, OnGameStatusChanged);
-        EventManager.Instance.AddListener(EventType.EatFoodEnd, OnGameStatusChanged);
+        if(EventManager.Instance != null)
+        {
+            EventManager.Instance.AddListener(EventType.EatFoodBegin, OnGameStatusChanged);
+            EventManager.Instance.AddListener(EventType.EatFoodEnd, OnGameStatusChanged);
+        }
 
         saveSpeed = defaultSpeed;
         saveDash = dashSpeed;
@@ -207,6 +210,7 @@ public class PlayerMovement : MonoBehaviour
             var xAbs = Mathf.Abs(dir.x);
             DirEnum = yAbs < xAbs? Direction.Horizontal : Direction.Down;
         }
+        
     }
     private float minSpeed;
     private float minDash;

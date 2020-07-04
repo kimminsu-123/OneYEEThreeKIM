@@ -42,4 +42,9 @@ public class AudioManager : MonoBehaviour
     {
         source.Stop();
     }
+
+    public bool IsPlaying()
+    {
+        return source.isPlaying;
+    }
 }

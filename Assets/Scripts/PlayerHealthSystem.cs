@@ -75,10 +75,16 @@ public class PlayerHealthSystem : LivingEntity
             case EventType.Opening:
                 break;
             case EventType.EatFoodBegin:
+                if (AudioManager.Instance.IsPlaying())
+                    return;
+
                 AudioManager.Instance.OneShotPlay(AudioManager.Instance.eatSound);
                 break;
             case EventType.EatFoodEnd:
-                AudioManager.Instance.StopSound();
+                if(AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.StopSound();
+                }
                 var info = args as ItemInfo;
                 if (info == null)
                     return;
@@ -100,6 +106,8 @@ public class PlayerHealthSystem : LivingEntity
     public void PlayerDetection(Obstacle obs)
     {
         currObs = obs;
+
+        
         TakeDamage(currObs.damage);
         switch (obs.type)
         {
@@ -125,5 +133,10 @@ public class PlayerHealthSystem : LivingEntity
                 playerMovement.ChangeSpeed(speed , dash );
             }
         }
+    }
+
+    public void Heal(float amount)
+    {
+        CurrHealth += amount;
     }
 }

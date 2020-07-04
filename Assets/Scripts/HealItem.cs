@@ -15,7 +15,7 @@ public class HealItem : MonoBehaviour
 {
     public ItemInfo info;
 
-    private void Start()
+    protected void Start()
     {
         EventManager.Instance.AddListener(EventType.EatFoodEnd, OnGameStatusChanged);
     }
@@ -30,7 +30,7 @@ public class HealItem : MonoBehaviour
         EventManager.Instance.PostNitification(EventType.EatFoodBegin, this, info);
     }
 
-    private void OnGameStatusChanged(EventType et, Component sender, object args = null)
+    protected virtual void OnGameStatusChanged(EventType et, Component sender, object args = null)
     {
         switch (et)
         {
@@ -50,7 +50,7 @@ public class HealItem : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    protected void OnDestroy()
     {
         EventManager.Instance.PostNitification(EventType.EatFoodEnd, this, new ItemInfo
         {

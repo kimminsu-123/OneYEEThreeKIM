@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5114077764481212243}
   - component: {fileID: -1914714980123851247}
   - component: {fileID: 309594245200774978}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: bush
   m_TagString: StageObj
   m_Icon: {fileID: 0}

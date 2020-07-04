@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7758835454008411568}
   - component: {fileID: 2730743017736963810}
   - component: {fileID: 8496871342398993727}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Snag
-  m_TagString: Untagged
+  m_TagString: StageObj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +100,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.92, y: 0.64}
+    oldSize: {x: 2.04, y: 0.68}
     newSize: {x: 1.92, y: 0.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
