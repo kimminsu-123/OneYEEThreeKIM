@@ -5,6 +5,8 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class TimeSystem : MonoBehaviour
 {
+    public float fadeTime=0.5f;
+
     public Light2D playerDarkLight;
     public Light2D globalLight;
 
@@ -48,11 +50,11 @@ public class TimeSystem : MonoBehaviour
             if (isDay)
             {
                 EventManager.Instance.PostNitification(EventType.OnDay, this);
-                StartCoroutine(AudioManager.Instance.FadeIn(1f, AudioManager.Instance.dayBGM));
+                StartCoroutine(AudioManager.Instance.FadeIn(fadeTime, AudioManager.Instance.dayBGM));
             }
             else
             {
-                StartCoroutine(AudioManager.Instance.FadeIn(1f, AudioManager.Instance.nightBGM));
+                StartCoroutine(AudioManager.Instance.FadeIn(fadeTime, AudioManager.Instance.nightBGM));
             }
             EventManager.Instance.PostNitification(EventType.OnTimeChange, this);
         }

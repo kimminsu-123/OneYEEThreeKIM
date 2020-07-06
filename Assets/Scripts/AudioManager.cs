@@ -27,12 +27,7 @@ public class AudioManager : MonoBehaviour
     }
     private void Awake()
     {
-        if (Instance)
-            DestroyImmediate(gameObject);
-        else
-            Instance = this;
-
-        DontDestroyOnLoad(gameObject);
+        Instance = this;
     }
 
     public void OneShotPlay(AudioClip clip, float vScale = 1f)

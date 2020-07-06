@@ -11,6 +11,7 @@ public enum EventType
     Gameover,
     OnTimeChange,
     OnDay,
+    OnChangedRainbow,
 }
 
 public class EventManager : MonoBehaviour
@@ -31,12 +32,8 @@ public class EventManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance)
-            DestroyImmediate(gameObject);
-        else
-            Instance = this;
+        Instance = this;
 
-        DontDestroyOnLoad(gameObject);
     }
 
 

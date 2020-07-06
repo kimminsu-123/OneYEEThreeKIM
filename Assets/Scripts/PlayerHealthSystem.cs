@@ -12,21 +12,12 @@ public class PlayerHealthSystem : LivingEntity
     public float minusHealthPerSec;
 
     private Vignette vignette;
-    private static PlayerHealthSystem instance;
     private PlayerMovement playerMovement;
 
     
     private void Awake()
     {
         base.Awake();
-
-        if (instance != null)
-            DestroyImmediate(gameObject);
-
-        else
-            instance = this;
-
-        DontDestroyOnLoad(gameObject);
 
         playerMovement = GetComponent<PlayerMovement>();
     }

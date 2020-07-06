@@ -28,6 +28,10 @@ public class ObSpawner : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.IsGameover)
+            return;
+
+
         CreateObOnce();
     }
 

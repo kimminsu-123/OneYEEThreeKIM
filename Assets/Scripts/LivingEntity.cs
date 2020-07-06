@@ -48,11 +48,11 @@ public class LivingEntity : MonoBehaviour
 
     public void Die()
     {
-        if(CurrHealth <= 0f)
+        if(CurrHealth <= 0f && gameObject.activeSelf)
         {
             EventManager.Instance.PostNitification(EventType.Gameover, this);
 
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

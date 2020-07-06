@@ -8,6 +8,7 @@ public class ItemInfo
     public string name;
     public float healAmount;
     public float eatTime = 2f;
+    public bool isRainbow = false;
 }
 
 [RequireComponent(typeof(CircleCollider2D))]

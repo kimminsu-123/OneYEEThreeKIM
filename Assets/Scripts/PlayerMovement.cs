@@ -175,6 +175,8 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case EventType.Gameover:
                 break;
+
+                //레인보우 이벤트 받기
         }
     }
     private BoxCollider2D boxCol;
