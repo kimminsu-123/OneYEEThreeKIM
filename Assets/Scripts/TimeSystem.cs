@@ -20,9 +20,17 @@ public class TimeSystem : MonoBehaviour
     private bool isGameover = false;
     private float volume = 1f;
 
+    public int hour = 6;
+    private float timeSpeed;
+    private readonly float dayOnSec = 86400;
+    private float secPerMinute;
+    private float clock = 0f;
+
     private void Awake()
     {
         dayTime_Sec = dayTime_Minute * 60f;
+
+        secPerMinute = dayOnSec / dayTime_Sec / 2f;
     }
 
     private void Start()
@@ -32,15 +40,16 @@ public class TimeSystem : MonoBehaviour
 
     void Update()
     {
+        if (isGameover)
+            return;
+
         Timer();
         ChangeDayTime();
+        ClockTimer();
     }
 
     private void Timer()
     {
-        if (isGameover)
-            return;
-
         timer += Time.deltaTime;
         if (timer >= dayTime_Sec)
         {
@@ -112,5 +121,22 @@ public class TimeSystem : MonoBehaviour
                 AudioManager.Instance.StopSound();
                 break;
         }
+    }
+
+    private void ClockTimer()
+    {
+        clock += Time.deltaTime * (secPerMinute / 60f);
+        Debug.Log(clock);
+        if(clock >= 60)
+        {
+            clock = 0f;
+            hour += 1;
+            if(hour >= 24)
+            {
+                hour = 0;
+            }
+        }
+
+        UIManager.Instance.gameInfoPanel.SetClockTime(hour, (int)clock);
     }
 }

@@ -5,12 +5,19 @@ using UnityEngine.UI;
 
 public class GameInfoPanel : MonoBehaviour
 {
+    public Text clockTxt;
+
     public Sprite[] TimerImages;
     public Image timerImage;
 
     public float lerpTime = 0.5f;
 
     private int timerIndex = 0;
+
+    public void SetClockTime(int hour, int minute)
+    {
+        clockTxt.text = $"{hour.ToString("00")} : {minute.ToString("00")}";
+    }
 
     public void SetTimeDayOrNight()
     {

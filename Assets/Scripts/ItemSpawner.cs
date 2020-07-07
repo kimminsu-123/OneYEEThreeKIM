@@ -63,7 +63,6 @@ public class ItemSpawner : MonoBehaviour
         {
             GameObject item;
             float uniqeRand = Random.Range(0f, 100f);
-            Debug.Log(uniqeRand);
             if (uniqeRand <= uniqeItemSpawnPercentage)
             {
                 item = Instantiate(uniqeItemPrefab);

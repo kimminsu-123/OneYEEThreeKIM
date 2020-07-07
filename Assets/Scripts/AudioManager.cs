@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public AudioClip rainbowSound;
+
     public AudioClip deadSound;
     public AudioClip eatSound;
 
@@ -40,14 +42,16 @@ public class AudioManager : MonoBehaviour
         source.Stop();
     }
 
-    public void StopSoundBGM()
-    {
-        sourceBGM.Stop();
-    }
-
     public bool IsPlaying()
     {
         return source.isPlaying;
+    }
+
+
+
+    public void StopSoundBGM()
+    {
+        sourceBGM.Stop();
     }
 
     public bool IsPlayingBGM()
@@ -80,6 +84,9 @@ public class AudioManager : MonoBehaviour
     }
     public IEnumerator FadeIn(float FadeTime, AudioClip clip)
     {
+        if (GameManager.Instance.IsRainbow)
+            yield break ;
+
         while (sourceBGM.volume > 0)
         {
             sourceBGM.volume -= Time.deltaTime / FadeTime;
@@ -94,4 +101,5 @@ public class AudioManager : MonoBehaviour
             yield return null;
         }
     }
+
 }

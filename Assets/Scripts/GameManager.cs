@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public float rainbowTime = 5f;
 
+    public TimeSystem timeSystem;
+
     public bool IsGameover
     {
         get;
@@ -69,6 +71,8 @@ public class GameManager : MonoBehaviour
                 {
                     IsRainbow = item.isRainbow;
                     EventManager.Instance.PostNitification(EventType.OnChangedRainbow, this, IsRainbow);
+
+                    AudioManager.Instance.Play(AudioManager.Instance.rainbowSound);
                     StartCoroutine(RainbowTimer());
                 }
                 break;
@@ -85,7 +89,11 @@ public class GameManager : MonoBehaviour
     private IEnumerator RainbowTimer()
     {
         yield return new WaitForSeconds(rainbowTime);
+
         IsRainbow = false;
         EventManager.Instance.PostNitification(EventType.OnChangedRainbow, this, IsRainbow);
+
+        var clip = timeSystem.isDay ? AudioManager.Instance.dayBGM : AudioManager.Instance.nightBGM;
+        AudioManager.Instance.StartCoroutine(AudioManager.Instance.FadeIn(0.4f, clip));
     }
 }
