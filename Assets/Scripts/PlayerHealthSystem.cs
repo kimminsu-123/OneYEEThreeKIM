@@ -11,7 +11,10 @@ public class PlayerHealthSystem : LivingEntity
     public float maxVignette = 0.3f;
     public float minusHealthPerSec;
 
+    public float chromaticTime = 0.5f;
+
     private Vignette vignette;
+    private ChromaticAberration chromatic;
     private PlayerMovement playerMovement;
 
     
@@ -26,6 +29,7 @@ public class PlayerHealthSystem : LivingEntity
     {
         base.Start();
         postProcessingOfHealth.TryGet(out vignette);
+        postProcessingOfHealth.TryGet(out chromatic);
         EventManager.Instance.AddListener(EventType.EatFoodEnd, OnGameStatusChanged);
         EventManager.Instance.AddListener(EventType.EatFoodBegin, OnGameStatusChanged);
     }
@@ -41,11 +45,20 @@ public class PlayerHealthSystem : LivingEntity
         CurrHealth -= damage;
         var value = Mathf.Clamp(maxVignette - (CurrHealth / maxHealth), 0f, maxVignette);
         vignette.intensity.value = value;
+
+        StartCoroutine(ChromaticEffect());
+    }
+
+    IEnumerator ChromaticEffect()
+    {
+        chromatic.intensity.value = 1f;
+        yield return new WaitForSeconds(chromaticTime);
+        chromatic.intensity.value = 0f;
     }
 
     private void DecreaseHealth()
     {
-        CurrHealth -= Time.deltaTime * minusHealthPerSec;
+        CurrHealth -= Time.deltaTime * minusHealthPerSec * GameManager.Instance.TimeScale;
         var value = Mathf.Clamp(maxVignette - (CurrHealth / maxHealth), 0f, maxVignette);
         vignette.intensity.value = value;
     }
@@ -108,7 +121,14 @@ public class PlayerHealthSystem : LivingEntity
                 speed = playerMovement.saveSpeed;
                 dash = playerMovement.saveDash;
                 isSlowly = true;
-                playerMovement.ChangeSpeed(speed * currObs.moveSpeedPercent, dash * currObs.moveSpeedPercent);
+                if (GameManager.Instance.IsRainbow)
+                {
+                    playerMovement.ChangeSpeed(dash * currObs.moveSpeedPercent, dash * currObs.moveSpeedPercent);
+                }
+                else
+                {
+                    playerMovement.ChangeSpeed(speed * currObs.moveSpeedPercent, dash * currObs.moveSpeedPercent);
+                }
                 break;
         }
     }
@@ -118,12 +138,19 @@ public class PlayerHealthSystem : LivingEntity
     {
         if (isSlowly)
         {
-            slowTimer += Time.deltaTime;
-            if(slowTimer >= currObs.time)
+            slowTimer += Time.deltaTime * GameManager.Instance.TimeScale;
+            if (slowTimer >= currObs.time)
             {
                 slowTimer = 0f;
                 isSlowly = false;
-                playerMovement.ChangeSpeed(speed , dash );
+                if (GameManager.Instance.IsRainbow)
+                {
+                    playerMovement.ChangeSpeed(dash, dash);
+                }
+                else
+                {
+                    playerMovement.ChangeSpeed(speed , dash );
+                }
             }
         }
     }

@@ -47,5 +47,10 @@ public class PlayerInput : MonoBehaviour
         IsDash = Input.GetKey(KeyCode.LeftControl) && IsMove;
 
         Interation = Input.GetKeyDown(KeyCode.Z);
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.Pause = !GameManager.Instance.Pause;
+        }
     }
 }

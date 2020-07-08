@@ -28,6 +28,10 @@ public class HealItem : MonoBehaviour
 
     public void Eat()
     {
+        if (GameManager.Instance.IsRainbow)
+        {
+            info.eatTime -= 0.5f;
+        }
         EventManager.Instance.PostNitification(EventType.EatFoodBegin, this, info);
     }
 

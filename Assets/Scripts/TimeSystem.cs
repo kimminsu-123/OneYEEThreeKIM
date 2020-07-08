@@ -50,7 +50,7 @@ public class TimeSystem : MonoBehaviour
 
     private void Timer()
     {
-        timer += Time.deltaTime;
+        timer += Time.deltaTime * GameManager.Instance.TimeScale;
         if (timer >= dayTime_Sec)
         {
             timer = 0f;
@@ -83,22 +83,22 @@ public class TimeSystem : MonoBehaviour
     private void SetNight()
     {
         float intensity = playerDarkLight.intensity;
-        intensity = Mathf.Clamp(intensity + Time.deltaTime * changeSpeed, 0f, 1f);
+        intensity = Mathf.Clamp(intensity + Time.deltaTime * changeSpeed * GameManager.Instance.TimeScale, 0f, 1f);
         playerDarkLight.intensity = intensity;
 
         intensity = globalLight.intensity;
-        intensity = Mathf.Clamp(intensity - Time.deltaTime * changeSpeed, 0f, 1f);
+        intensity = Mathf.Clamp(intensity - Time.deltaTime * changeSpeed * GameManager.Instance.TimeScale, 0f, 1f);
         globalLight.intensity = intensity;
     }
 
     private void SetDay()
     {
         float intensity = globalLight.intensity;
-        intensity = Mathf.Clamp(intensity + Time.deltaTime * changeSpeed, 0f, 1f);
+        intensity = Mathf.Clamp(intensity + Time.deltaTime * changeSpeed * GameManager.Instance.TimeScale, 0f, 1f);
         globalLight.intensity = intensity;
 
         intensity = playerDarkLight.intensity;
-        intensity = Mathf.Clamp(intensity - Time.deltaTime * changeSpeed, 0f, 1f);
+        intensity = Mathf.Clamp(intensity - Time.deltaTime * changeSpeed * GameManager.Instance.TimeScale, 0f, 1f);
         playerDarkLight.intensity = intensity;
     }
 
@@ -125,8 +125,7 @@ public class TimeSystem : MonoBehaviour
 
     private void ClockTimer()
     {
-        clock += Time.deltaTime * (secPerMinute / 60f);
-        Debug.Log(clock);
+        clock += Time.deltaTime * (secPerMinute / 60f) * GameManager.Instance.TimeScale;
         if(clock >= 60)
         {
             clock = 0f;

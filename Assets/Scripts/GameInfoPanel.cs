@@ -52,7 +52,7 @@ public class GameInfoPanel : MonoBehaviour
             SetAlpha(timerImage, currentValue);
 
             float alpha = timerImage.color.a;
-            alpha -= Time.deltaTime;
+            alpha -= Time.deltaTime * GameManager.Instance.TimeScale;
 
             if (percentageComplete >= 1f) break;
 

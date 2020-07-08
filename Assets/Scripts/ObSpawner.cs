@@ -45,7 +45,7 @@ public class ObSpawner : MonoBehaviour
     private int index = 0;
     private void CreateObOnce()
     {
-        regenTimer += Time.deltaTime;
+        regenTimer += Time.deltaTime * GameManager.Instance.TimeScale;
         if(regenTimer >= regenTime)
         {
             CreateObstacle();

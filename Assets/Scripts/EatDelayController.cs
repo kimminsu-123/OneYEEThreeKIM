@@ -45,7 +45,7 @@ public class EatDelayController : MonoBehaviour
         if (!isTimer)
             return;
 
-        timer -= Time.deltaTime;
+        timer -= Time.deltaTime * GameManager.Instance.TimeScale;
         m_delay.fillAmount = timer / time;
 
         if (timer <= 0f)

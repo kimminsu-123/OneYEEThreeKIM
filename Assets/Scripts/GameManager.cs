@@ -1,13 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public float rainbowTime = 5f;
 
     public TimeSystem timeSystem;
+
+    public float TimeScale
+    {
+        get;
+        private set;
+    }
 
     public bool IsGameover
     {
@@ -19,6 +24,22 @@ public class GameManager : MonoBehaviour
     {
         get;
         private set;
+    }
+
+    private bool isPause;
+    public bool Pause
+    {
+        get
+        {
+            return isPause;
+        }
+        set
+        {
+            isPause = value;
+            TimeScale = isPause ? 0f : 1f;
+
+            EventManager.Instance.PostNitification(EventType.OnPause, this, isPause);
+        }
     }
 
     private static GameManager instance;
@@ -38,6 +59,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        Pause = false;
     }
 
     void Start()
@@ -50,8 +72,19 @@ public class GameManager : MonoBehaviour
     {
         if (IsGameover && Input.GetKeyDown(KeyCode.Space))
         {
-            SceneManager.LoadScene(0);
+            Restart();
         }
+    }
+
+    public void Restart()
+    {
+        SceneLoadHelper.instance.LoadLevel(1);
+        Pause = false;
+    }
+
+    public void MainMenu()
+    {
+        SceneLoadHelper.instance.LoadLevel(0);
     }
 
     private void OnGameStatusChanged(EventType et, Component sender, object args = null)

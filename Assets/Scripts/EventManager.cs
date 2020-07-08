@@ -12,6 +12,7 @@ public enum EventType
     OnTimeChange,
     OnDay,
     OnChangedRainbow,
+    OnPause,
 }
 
 public class EventManager : MonoBehaviour

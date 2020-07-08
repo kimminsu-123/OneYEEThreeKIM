@@ -60,7 +60,7 @@ public class ChangeRandomColorRainbow : MonoBehaviour
 
     private void SetRandomColor()
     { 
-        timer += Time.deltaTime;
+        timer += Time.deltaTime * GameManager.Instance.TimeScale;
         if(timer >= time)
         {
             var newColor = GetRandomColor();

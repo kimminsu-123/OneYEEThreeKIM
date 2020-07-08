@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public GameoverPanel gameoverPanel;
     public DelayPanel delayPanel;
     public GameInfoPanel gameInfoPanel;
+    public PausePanel pausePanel;
 
     private static UIManager instance;
     public static UIManager Instance
@@ -33,6 +34,7 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.AddListener(EventType.Gameover, GameStatusChanged);
         EventManager.Instance.AddListener(EventType.EatFoodBegin, GameStatusChanged);
         EventManager.Instance.AddListener(EventType.OnTimeChange, GameStatusChanged);
+        EventManager.Instance.AddListener(EventType.OnPause, GameStatusChanged);
     }
 
     private void GameStatusChanged(EventType et, Component sender, object args = null)
@@ -56,6 +58,15 @@ public class UIManager : MonoBehaviour
                 break;
             case EventType.OnTimeChange:
                 gameInfoPanel.SetTimeDayOrNight();
+                break;
+            case EventType.OnPause:
+                //pausePanel setactive true
+                var pause = (bool)args;
+                pausePanel.ShowAndHideOption(pausePanel.pausePanelTr, pause);
+
+                if (!pause)
+                    pausePanel.ShowAndHideOption(pausePanel.optionPanelTr, pause);
+                    
                 break;
         }
     }

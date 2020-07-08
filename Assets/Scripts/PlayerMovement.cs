@@ -81,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
         {
             EventManager.Instance.AddListener(EventType.EatFoodBegin, OnGameStatusChanged);
             EventManager.Instance.AddListener(EventType.EatFoodEnd, OnGameStatusChanged);
+            EventManager.Instance.AddListener(EventType.OnChangedRainbow, OnGameStatusChanged);
         }
 
         saveSpeed = defaultSpeed;
@@ -129,14 +130,14 @@ public class PlayerMovement : MonoBehaviour
     private void Dash()
     {
         //Check DashGauge
-        if (CurrDashGauge <= 0)
+        if (CurrDashGauge <= 0 || isRainbow)
             return;
 
         //ChangeCurrSpeed
         CurrSpeed = dashSpeed;
 
         //Update Gauge
-        var dashValue = dashPerSec * Time.fixedDeltaTime;
+        var dashValue = dashPerSec * Time.fixedDeltaTime * GameManager.Instance.TimeScale;
         CurrDashGauge = Mathf.Max(CurrDashGauge - dashValue, 0f);
     }
 
@@ -150,15 +151,16 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Check Timer
-        feelDashTimer += Time.deltaTime;
+        feelDashTimer += Time.deltaTime * GameManager.Instance.TimeScale;
         if (feelDashTimer < 1f)
             return;
 
         //Feel Dash
-        var feelAmount = feelDashPerSec * Time.deltaTime;
+        var feelAmount = feelDashPerSec * Time.deltaTime * GameManager.Instance.TimeScale;
         CurrDashGauge = Mathf.Min(CurrDashGauge + feelAmount, maxDashGauge);
     }
 
+    private bool isRainbow = false;
     private void OnGameStatusChanged(EventType et, Component sender, object args = null)
     {
         switch (et)
@@ -174,6 +176,17 @@ public class PlayerMovement : MonoBehaviour
             case EventType.Story:
                 break;
             case EventType.Gameover:
+                break;
+            case EventType.OnChangedRainbow:
+                isRainbow = (bool)args;
+                if (isRainbow)
+                {
+                    ChangeSpeed(dashSpeed, dashSpeed);
+                }
+                else
+                {
+                    ChangeSpeed(saveSpeed, saveDash);
+                }
                 break;
 
                 //레인보우 이벤트 받기
