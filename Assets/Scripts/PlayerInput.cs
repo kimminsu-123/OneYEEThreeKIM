@@ -41,6 +41,9 @@ public class PlayerInput : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.IsGameover)
+            return;
+
         H = Input.GetAxis("Horizontal");
         V = Input.GetAxis("Vertical");
 

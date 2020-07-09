@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public float rainbowTime = 5f;
 
+    public ParticleSystem leafEffect;
+
     public TimeSystem timeSystem;
 
     public float TimeScale
@@ -37,6 +39,18 @@ public class GameManager : MonoBehaviour
         {
             isPause = value;
             TimeScale = isPause ? 0f : 1f;
+            if (isPause)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                leafEffect.Pause();
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                leafEffect.Play();
+            }
 
             EventManager.Instance.PostNitification(EventType.OnPause, this, isPause);
         }
@@ -66,14 +80,6 @@ public class GameManager : MonoBehaviour
     {
         EventManager.Instance.AddListener(EventType.Gameover, OnGameStatusChanged);
         EventManager.Instance.AddListener(EventType.EatFoodEnd, OnGameStatusChanged);
-    }
-
-    void Update()
-    {
-        if (IsGameover && Input.GetKeyDown(KeyCode.Space))
-        {
-            Restart();
-        }
     }
 
     public void Restart()
@@ -115,6 +121,9 @@ public class GameManager : MonoBehaviour
                 AudioManager.Instance.OneShotPlay(AudioManager.Instance.deadSound);
                 IsGameover = true;
                 StopAllCoroutines();
+                leafEffect.Pause();
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 break;
         }
     }

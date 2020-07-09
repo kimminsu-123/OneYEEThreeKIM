@@ -55,6 +55,7 @@ public class UIManager : MonoBehaviour
                 break;
             case EventType.Gameover:
                 gameoverPanel.gameObject.SetActive(true);
+                gameoverPanel.UpdatePlayTime(gameInfoPanel.playTimeText.text);
                 break;
             case EventType.OnTimeChange:
                 gameInfoPanel.SetTimeDayOrNight();

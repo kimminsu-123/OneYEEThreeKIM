@@ -25,7 +25,7 @@ public class AnimationController : MonoBehaviour
     void Update()
     {
         animator.SetBool("IsWalk", input.IsMove && movement.CanMove);
-        animator.SetBool("IsRun", input.IsDash && movement.CanMove);
+        animator.SetBool("IsRun", input.IsDash && movement.CanMove && movement.CurrDashGauge > 0f);
 
         animator.SetFloat("Horizontal", input.H);
         animator.SetFloat("Vertical", input.V);

@@ -45,11 +45,17 @@ public class AudioManager : MonoBehaviour
     public void StopSound()
     {
         source.Stop();
+        source.clip = null;
     }
 
     public bool IsPlaying()
     {
         return source.isPlaying;
+    }
+    public void PlayEffect(AudioClip clip)
+    {
+        source.clip = clip;
+        source.Play();
     }
 
 

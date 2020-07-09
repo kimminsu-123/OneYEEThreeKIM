@@ -26,6 +26,10 @@ public class TimeSystem : MonoBehaviour
     private float secPerMinute;
     private float clock = 0f;
 
+    private float playTime_Sec = 0f;
+    private int playTime_Min = 0;
+    private int playTime_Hour = 0;
+
     private void Awake()
     {
         dayTime_Sec = dayTime_Minute * 60f;
@@ -43,12 +47,13 @@ public class TimeSystem : MonoBehaviour
         if (isGameover)
             return;
 
-        Timer();
+        DayTimer();
         ChangeDayTime();
         ClockTimer();
+        PlayTiemr();
     }
 
-    private void Timer()
+    private void DayTimer()
     {
         timer += Time.deltaTime * GameManager.Instance.TimeScale;
         if (timer >= dayTime_Sec)
@@ -137,5 +142,15 @@ public class TimeSystem : MonoBehaviour
         }
 
         UIManager.Instance.gameInfoPanel.SetClockTime(hour, (int)clock);
+    }
+
+    private void PlayTiemr()
+    {
+        playTime_Sec += Time.deltaTime;
+
+        playTime_Min = playTime_Sec >= 60f ? playTime_Min + 1 : playTime_Min;
+        playTime_Hour = playTime_Min >= 60f ? playTime_Hour + 1 : playTime_Hour;
+
+        UIManager.Instance.gameInfoPanel.SetPlayTime(playTime_Hour, playTime_Min, (int)playTime_Sec);
     }
 }
