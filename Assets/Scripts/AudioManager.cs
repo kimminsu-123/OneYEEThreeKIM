@@ -30,16 +30,25 @@ public class AudioManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
+        source = GameObject.FindWithTag("EffectSource").GetComponent<AudioSource>();
+        sourceBGM = GameObject.FindWithTag("BGMSource").GetComponent<AudioSource>();
     }
 
     private void Start()
     {
         EventManager.Instance.AddListener(EventType.OnPause, GameStatusChanged);
+        Play(dayBGM);
     }
 
     public void OneShotPlay(AudioClip clip, float vScale = 1f)
     {
         source.PlayOneShot(clip, vScale);
+    }
+
+    public void OneShotPlay(AudioClip clip)
+    {
+        source.PlayOneShot(clip);
     }
 
     public void StopSound()
