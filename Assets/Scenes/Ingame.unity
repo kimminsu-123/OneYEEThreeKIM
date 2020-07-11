@@ -2181,7 +2181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rainbowSound: {fileID: 8300000, guid: cb35e292ec6aab940ad48309e8210c0c, type: 3}
   deadSound: {fileID: 8300000, guid: b3604adfadbffb64293a4d4b6f94e9e5, type: 3}
-  eatSound: {fileID: 8300000, guid: 96e894f244674b54299bd5566cd295df, type: 3}
+  eatSound: {fileID: 8300000, guid: 508a9baea0409ed4abb5bc152827b289, type: 3}
   nightBGM: {fileID: 8300000, guid: 1a5d70d60e0620d4a9ae8a0ade1780ec, type: 3}
   dayBGM: {fileID: 8300000, guid: 561fa63141f64c0418799bcdfdbfc3a7, type: 3}
   source: {fileID: 0}

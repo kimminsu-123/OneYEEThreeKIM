@@ -30,7 +30,7 @@ public class InterationHelper : MonoBehaviour
     private void CheckObject()
     {
         var items = Physics2D.OverlapBoxAll(GetCenter(), size, 0f, checkLayer);
-        if (items == null)
+        if (items.Length <= 0)
             return;
 
         var linqItems = (from item in items
