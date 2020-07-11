@@ -132,6 +132,8 @@ MonoBehaviour:
   info:
     name: Mushroom
     healAmount: 50
-    eatTime: 2
+    eatTime: 1
+    isRainbow: 0
   poisonDamage: 30
   poisonPersent: 50
+  heal: 70

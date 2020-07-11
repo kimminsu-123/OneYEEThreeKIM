@@ -5,6 +5,8 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class TimeSystem : MonoBehaviour
 {
+    public float fadeTime=0.5f;
+
     public Light2D playerDarkLight;
     public Light2D globalLight;
 
@@ -18,9 +20,21 @@ public class TimeSystem : MonoBehaviour
     private bool isGameover = false;
     private float volume = 1f;
 
+    public int hour = 6;
+    private float timeSpeed;
+    private readonly float dayOnSec = 86400;
+    private float secPerMinute;
+    private float clock = 0f;
+
+    private float playTime_Sec = 0f;
+    private int playTime_Min = 0;
+    private int playTime_Hour = 0;
+
     private void Awake()
     {
         dayTime_Sec = dayTime_Minute * 60f;
+
+        secPerMinute = dayOnSec / dayTime_Sec / 2f;
     }
 
     private void Start()
@@ -30,31 +44,36 @@ public class TimeSystem : MonoBehaviour
 
     void Update()
     {
-        Timer();
-        ChangeDayTime();
-    }
-
-    private void Timer()
-    {
         if (isGameover)
             return;
 
-        timer += Time.deltaTime;
+        DayTimer();
+        ChangeDayTime();
+        ClockTimer();
+        PlayTiemr();
+    }
+
+    private void DayTimer()
+    {
+        timer += Time.deltaTime * GameManager.Instance.TimeScale;
         if (timer >= dayTime_Sec)
         {
+            var clip = AudioManager.Instance.dayBGM;
             timer = 0f;
             isDay = !isDay;
             volume = 0f;
             if (isDay)
             {
                 EventManager.Instance.PostNitification(EventType.OnDay, this);
-                StartCoroutine(AudioManager.Instance.FadeIn(1f, AudioManager.Instance.dayBGM));
             }
             else
             {
-                StartCoroutine(AudioManager.Instance.FadeIn(1f, AudioManager.Instance.nightBGM));
+                clip = AudioManager.Instance.nightBGM;
             }
+
             EventManager.Instance.PostNitification(EventType.OnTimeChange, this);
+            if (!GameManager.Instance.IsRainbow)
+                StartCoroutine(AudioManager.Instance.FadeIn(fadeTime, clip));
         }
     }
 
@@ -72,22 +91,22 @@ public class TimeSystem : MonoBehaviour
     private void SetNight()
     {
         float intensity = playerDarkLight.intensity;
-        intensity = Mathf.Clamp(intensity + Time.deltaTime * changeSpeed, 0f, 1f);
+        intensity = Mathf.Clamp(intensity + Time.deltaTime * changeSpeed * GameManager.Instance.TimeScale, 0f, 1f);
         playerDarkLight.intensity = intensity;
 
         intensity = globalLight.intensity;
-        intensity = Mathf.Clamp(intensity - Time.deltaTime * changeSpeed, 0f, 1f);
+        intensity = Mathf.Clamp(intensity - Time.deltaTime * changeSpeed * GameManager.Instance.TimeScale, 0f, 1f);
         globalLight.intensity = intensity;
     }
 
     private void SetDay()
     {
         float intensity = globalLight.intensity;
-        intensity = Mathf.Clamp(intensity + Time.deltaTime * changeSpeed, 0f, 1f);
+        intensity = Mathf.Clamp(intensity + Time.deltaTime * changeSpeed * GameManager.Instance.TimeScale, 0f, 1f);
         globalLight.intensity = intensity;
 
         intensity = playerDarkLight.intensity;
-        intensity = Mathf.Clamp(intensity - Time.deltaTime * changeSpeed, 0f, 1f);
+        intensity = Mathf.Clamp(intensity - Time.deltaTime * changeSpeed * GameManager.Instance.TimeScale, 0f, 1f);
         playerDarkLight.intensity = intensity;
     }
 
@@ -110,5 +129,39 @@ public class TimeSystem : MonoBehaviour
                 AudioManager.Instance.StopSound();
                 break;
         }
+    }
+
+    private void ClockTimer()
+    {
+        clock += Time.deltaTime * (secPerMinute / 60f) * GameManager.Instance.TimeScale;
+        if(clock >= 60)
+        {
+            clock = 0f;
+            hour += 1;
+            if(hour >= 24)
+            {
+                hour = 0;
+            }
+        }
+
+        UIManager.Instance.gameInfoPanel.SetClockTime(hour, (int)clock);
+    }
+
+    private void PlayTiemr()
+    {
+        playTime_Sec += Time.deltaTime;
+
+        if(playTime_Sec >= 60f)
+        {
+            playTime_Min++;
+            playTime_Sec = 0f;
+        }
+
+        if(playTime_Min >= 60)
+        {
+            playTime_Hour++;
+            playTime_Min = 0;
+        }
+        UIManager.Instance.gameInfoPanel.SetPlayTime(playTime_Hour, playTime_Min, (int)playTime_Sec);
     }
 }

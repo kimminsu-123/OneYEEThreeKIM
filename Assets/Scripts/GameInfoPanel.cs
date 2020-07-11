@@ -5,12 +5,25 @@ using UnityEngine.UI;
 
 public class GameInfoPanel : MonoBehaviour
 {
+    public Text clockTxt;
+    public Text playTimeText;
+
     public Sprite[] TimerImages;
     public Image timerImage;
 
     public float lerpTime = 0.5f;
 
     private int timerIndex = 0;
+
+    public void SetClockTime(int hour, int minute)
+    {
+        clockTxt.text = $"{hour.ToString("00")} : {minute.ToString("00")}";
+    }
+
+    public void SetPlayTime(int hour, int minute, int sec)
+    {
+        playTimeText.text = $"{hour.ToString("00")} : {minute.ToString("00")} : {sec.ToString("00")}";
+    }
 
     public void SetTimeDayOrNight()
     {
@@ -45,7 +58,7 @@ public class GameInfoPanel : MonoBehaviour
             SetAlpha(timerImage, currentValue);
 
             float alpha = timerImage.color.a;
-            alpha -= Time.deltaTime;
+            alpha -= Time.deltaTime * GameManager.Instance.TimeScale;
 
             if (percentageComplete >= 1f) break;
 

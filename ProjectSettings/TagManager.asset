@@ -9,6 +9,8 @@ TagManager:
   - ItemSpawner
   - ObSpawner
   - Item
+  - EffectSource
+  - BGMSource
   layers:
   - Default
   - TransparentFX

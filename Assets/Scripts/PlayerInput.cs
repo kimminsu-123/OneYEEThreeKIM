@@ -41,11 +41,19 @@ public class PlayerInput : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.IsGameover)
+            return;
+
         H = Input.GetAxis("Horizontal");
         V = Input.GetAxis("Vertical");
 
         IsDash = Input.GetKey(KeyCode.LeftControl) && IsMove;
 
         Interation = Input.GetKeyDown(KeyCode.Z);
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.Pause = !GameManager.Instance.Pause;
+        }
     }
 }

@@ -8,6 +8,7 @@ public class ItemInfo
     public string name;
     public float healAmount;
     public float eatTime = 2f;
+    public bool isRainbow = false;
 }
 
 [RequireComponent(typeof(CircleCollider2D))]
@@ -27,6 +28,10 @@ public class HealItem : MonoBehaviour
 
     public void Eat()
     {
+        if (GameManager.Instance.IsRainbow)
+        {
+            info.eatTime -= 0.5f;
+        }
         EventManager.Instance.PostNitification(EventType.EatFoodBegin, this, info);
     }
 

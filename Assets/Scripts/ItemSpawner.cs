@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
 {
+    public GameObject uniqeItemPrefab;
+    public float uniqeItemSpawnPercentage = 1.0f;
+
     public GameObject[] itemPrefabs;
 
     public int itemSpawnCount;
@@ -58,9 +61,18 @@ public class ItemSpawner : MonoBehaviour
     {
         for(int i = 0; i < itemSpawnCount; i++)
         {
-            int randItem = Random.Range(0, itemPrefabs.Length);
+            GameObject item;
+            float uniqeRand = Random.Range(0f, 100f);
+            if (uniqeRand <= uniqeItemSpawnPercentage)
+            {
+                item = Instantiate(uniqeItemPrefab);
+            }
+            else
+            {
+                int randItem = Random.Range(0, itemPrefabs.Length);
+                item = Instantiate(itemPrefabs[randItem]);
+            }
 
-            GameObject item = Instantiate(itemPrefabs[randItem]);
             SetSmallRectRange(item.GetComponent<HealItem>());
 
             var x = Random.Range(smallRect.xMin, smallRect.xMax);
