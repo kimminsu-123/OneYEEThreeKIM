@@ -114,8 +114,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   info:
     name: "\uD574\uBC14\uB77C\uAE30\uC528"
-    healAmount: 20
-    eatTime: 2
+    healAmount: 30
+    eatTime: 1
+    isRainbow: 0
 --- !u!114 &5569729866192757742
 MonoBehaviour:
   m_ObjectHideFlags: 0

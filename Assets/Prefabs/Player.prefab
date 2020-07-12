@@ -483,7 +483,7 @@ MonoBehaviour:
   postProcessingOfHealth: {fileID: 11400000, guid: c076213428a21e845a6caa4cebfa74e4,
     type: 2}
   maxVignette: 0.5
-  minusHealthPerSec: 20
+  minusHealthPerSec: 17
   chromaticTime: 0.1
 --- !u!114 &5207413512534675544
 MonoBehaviour:

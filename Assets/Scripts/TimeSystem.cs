@@ -58,19 +58,22 @@ public class TimeSystem : MonoBehaviour
         timer += Time.deltaTime * GameManager.Instance.TimeScale;
         if (timer >= dayTime_Sec)
         {
+            var clip = AudioManager.Instance.dayBGM;
             timer = 0f;
             isDay = !isDay;
             volume = 0f;
             if (isDay)
             {
                 EventManager.Instance.PostNitification(EventType.OnDay, this);
-                StartCoroutine(AudioManager.Instance.FadeIn(fadeTime, AudioManager.Instance.dayBGM));
             }
             else
             {
-                StartCoroutine(AudioManager.Instance.FadeIn(fadeTime, AudioManager.Instance.nightBGM));
+                clip = AudioManager.Instance.nightBGM;
             }
+
             EventManager.Instance.PostNitification(EventType.OnTimeChange, this);
+            if (!GameManager.Instance.IsRainbow)
+                StartCoroutine(AudioManager.Instance.FadeIn(fadeTime, clip));
         }
     }
 
@@ -148,9 +151,17 @@ public class TimeSystem : MonoBehaviour
     {
         playTime_Sec += Time.deltaTime;
 
-        playTime_Min = playTime_Sec >= 60f ? playTime_Min + 1 : playTime_Min;
-        playTime_Hour = playTime_Min >= 60f ? playTime_Hour + 1 : playTime_Hour;
+        if(playTime_Sec >= 60f)
+        {
+            playTime_Min++;
+            playTime_Sec = 0f;
+        }
 
+        if(playTime_Min >= 60)
+        {
+            playTime_Hour++;
+            playTime_Min = 0;
+        }
         UIManager.Instance.gameInfoPanel.SetPlayTime(playTime_Hour, playTime_Min, (int)playTime_Sec);
     }
 }

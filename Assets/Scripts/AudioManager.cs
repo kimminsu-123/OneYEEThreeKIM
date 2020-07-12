@@ -38,7 +38,7 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         EventManager.Instance.AddListener(EventType.OnPause, GameStatusChanged);
-        Play(dayBGM);
+        Play(dayBGM, true);
     }
 
     public void OneShotPlay(AudioClip clip, float vScale = 1f)
@@ -79,12 +79,12 @@ public class AudioManager : MonoBehaviour
         return sourceBGM.isPlaying;
     }
 
-    public void Play(AudioClip clip)
+    public void Play(AudioClip clip, bool isStart)
     {
-        if (clip == sourceBGM.clip)
+        if (clip == sourceBGM.clip && !isStart)
             return;
-
         sourceBGM.clip = clip;
+        StopSoundBGM();
         sourceBGM.Play();
     }
 
@@ -117,7 +117,7 @@ public class AudioManager : MonoBehaviour
             yield return null;
         }
 
-        Play(clip);
+        Play(clip, false);
         sourceBGM.volume = 0f;
         while (sourceBGM.volume < 1)
         {

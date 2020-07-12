@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
                     IsRainbow = item.isRainbow;
                     EventManager.Instance.PostNitification(EventType.OnChangedRainbow, this, IsRainbow);
 
-                    AudioManager.Instance.Play(AudioManager.Instance.rainbowSound);
+                    AudioManager.Instance.Play(AudioManager.Instance.rainbowSound, false);
                     StartCoroutine(RainbowTimer());
                 }
                 break;

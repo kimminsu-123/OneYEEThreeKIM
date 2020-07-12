@@ -116,7 +116,7 @@ MonoBehaviour:
   info:
     name: "\uBB34\uC9C0\uAC1C\uB3C4\uD1A0\uB9AC"
     healAmount: 50
-    eatTime: 2
+    eatTime: 1
     isRainbow: 1
 --- !u!114 &7766665962200488938
 MonoBehaviour:
