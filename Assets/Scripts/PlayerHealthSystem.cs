@@ -58,6 +58,9 @@ public class PlayerHealthSystem : LivingEntity
 
     private void DecreaseHealth()
     {
+        if (GameManager.Instance.IsRainbow)
+            return;
+
         CurrHealth -= Time.deltaTime * minusHealthPerSec * GameManager.Instance.TimeScale;
         var value = Mathf.Clamp(maxVignette - (CurrHealth / maxHealth), 0f, maxVignette);
         vignette.intensity.value = value;

@@ -47,7 +47,7 @@ public class PlayerInput : MonoBehaviour
         H = Input.GetAxis("Horizontal");
         V = Input.GetAxis("Vertical");
 
-        IsDash = Input.GetKey(KeyCode.LeftControl) && IsMove;
+        IsDash = Input.GetKey(KeyCode.LeftShift) && IsMove;
 
         Interation = Input.GetKeyDown(KeyCode.Z);
 
