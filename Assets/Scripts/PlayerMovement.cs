@@ -90,6 +90,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.Pause)
+            return;
+
         FeelDash();
         SetDirection();
     }

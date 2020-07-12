@@ -149,7 +149,7 @@ public class TimeSystem : MonoBehaviour
 
     private void PlayTiemr()
     {
-        playTime_Sec += Time.deltaTime;
+        playTime_Sec += Time.deltaTime * GameManager.Instance.TimeScale;
 
         if(playTime_Sec >= 60f)
         {

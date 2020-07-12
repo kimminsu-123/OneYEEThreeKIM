@@ -44,16 +44,19 @@ public class PlayerInput : MonoBehaviour
         if (GameManager.Instance.IsGameover)
             return;
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.Pause = !GameManager.Instance.Pause;
+        }
+
+        if (GameManager.Instance.Pause)
+            return;
+
         H = Input.GetAxis("Horizontal");
         V = Input.GetAxis("Vertical");
 
         IsDash = Input.GetKey(KeyCode.LeftShift) && IsMove;
 
         Interation = Input.GetKeyDown(KeyCode.Z);
-
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            GameManager.Instance.Pause = !GameManager.Instance.Pause;
-        }
     }
 }

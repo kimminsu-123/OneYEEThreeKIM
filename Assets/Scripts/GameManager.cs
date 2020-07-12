@@ -22,10 +22,29 @@ public class GameManager : MonoBehaviour
         private set;
     }
 
+    private bool isRainbow;
     public bool IsRainbow
     {
-        get;
-        private set;
+        get
+        {
+            return isRainbow;
+        }
+        private set
+        {
+            isRainbow = value;
+
+            if(isRainbow == false && AudioManager.Instance.source.clip == AudioManager.Instance.rainbowSound)
+            {
+                if (timeSystem.isDay)
+                {
+                    AudioManager.Instance.Play(AudioManager.Instance.dayBGM, false);
+                }
+                else
+                {
+                    AudioManager.Instance.Play(AudioManager.Instance.nightBGM, false);
+                }
+            }
+        }
     }
 
     private bool isPause;
@@ -119,6 +138,7 @@ public class GameManager : MonoBehaviour
                 break;
             case EventType.Gameover:
                 AudioManager.Instance.OneShotPlay(AudioManager.Instance.deadSound);
+                AudioManager.Instance.StopSoundBGM();
                 IsGameover = true;
                 StopAllCoroutines();
                 leafEffect.Pause();
