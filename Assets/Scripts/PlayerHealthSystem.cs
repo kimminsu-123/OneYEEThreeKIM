@@ -84,8 +84,8 @@ public class PlayerHealthSystem : LivingEntity
                 if (AudioManager.Instance.IsPlaying())
                     return;
 
-                AudioManager.Instance.PlayEffect(AudioManager.Instance.eatSound);
                 AudioManager.Instance.source.loop = true;
+                AudioManager.Instance.PlayEffect(AudioManager.Instance.eatSound);
                 break;
             case EventType.EatFoodEnd:
                 if(AudioManager.Instance != null)

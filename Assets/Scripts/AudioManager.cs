@@ -54,7 +54,6 @@ public class AudioManager : MonoBehaviour
     public void StopSound()
     {
         source.Stop();
-        source.clip = null;
     }
 
     public bool IsPlaying()
@@ -147,10 +146,12 @@ public class AudioManager : MonoBehaviour
                 if (pause)
                 {
                     source.Pause();
+                    source.mute = true;
                     sourceBGM.Pause();
                     break;
                 }
                 source.UnPause();
+                source.mute = false;
                 sourceBGM.UnPause();
                 //pausePanel setactive true
                 break;
